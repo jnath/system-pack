@@ -17,3 +17,23 @@ add this on your package.json
 
 use system-pack
 `npm run config`
+
+override
+````
+"system": {
+    "paths": {
+      "core-js/library/fn/symbol": "core-js/library/fn/symbol/index.js"
+    },
+    "packages": {
+      "/lib": {
+        "defaultExtention": "js"
+      },
+      "react": {
+        "main": "dist/react.js"
+      },
+      "react-dom": {
+        "main": "dist/react-dom.js"
+      }
+    }
+  }
+````
