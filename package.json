@@ -2,7 +2,7 @@
   "name": "system-pack",
   "version": "1.0.2",
   "description": "",
-  "main": "lib/src/system-pack.js",
+  "main": "lib/src/SystemPackager.js",
   "scripts": {
     "test": "npm run build && nyc -x **/*.spec.js  mocha ./lib/test --require source-map-support/register --recursive",
     "build": "tsc -p ."
