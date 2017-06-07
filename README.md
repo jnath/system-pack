@@ -18,7 +18,10 @@ add this on your package.json
 use system-pack
 `npm run config`
 
-override
+# override configuration
+override in package.json
+add key "system" in package.json and add averride configuration of systemjs
+paths, packages, packageConfigPaths, maps, meta
 ````
 "system": {
     "paths": {
