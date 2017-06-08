@@ -5,6 +5,8 @@ import * as path from 'path';
 import SystemPackager, { Package, GetPackageHandlerCb, SystemConfig } from './SystemPackager';
 import FilesFinder from './FilesFinder';
 
+const join = path.posix.join;
+
 let outfile: string = 'system.packages.js';
 let baseModulePath: string = 'node_modules';
 let defaultMainList: Array<string> = [
@@ -13,7 +15,7 @@ let defaultMainList: Array<string> = [
 let basePath: string = process.cwd();
 
 function getFile(fileName: string, cwd: string, cb: (err?: NodeJS.ErrnoException, data?: string) => void) {
-  let filePath: string = path.join(cwd, fileName);
+  let filePath: string = join(cwd, fileName);
   fs.readFile(filePath, "utf-8", (err: NodeJS.ErrnoException, data: string) => {
     if (err) {
       return cb(err);
@@ -33,7 +35,7 @@ function getPackage(packagePath: string, cb: (err?: NodeJS.ErrnoException, data?
 }
 
 function error(err: Error) {
-  fs.writeFileSync(path.join(basePath, outfile), err);
+  fs.writeFileSync(join(basePath, outfile), err);
 }
 
 function noMain(submodulePackagePath: string, systemPackager: SystemPackager, pkg: Package) {
@@ -58,7 +60,7 @@ getPackage(basePath, (err: NodeJS.ErrnoException, data: Package) => {
   let systemPackager: SystemPackager = new SystemPackager(data);
 
   systemPackager.parse((pkgName: string, cb: GetPackageHandlerCb) => {
-    let submodulePackagePath: string = path.join(basePath, baseModulePath, pkgName);
+    let submodulePackagePath: string = join(basePath, baseModulePath, pkgName);
     getPackage(submodulePackagePath, (err: NodeJS.ErrnoException, pkg: Package) => {
       if (err) {
         error(err);
@@ -72,6 +74,6 @@ getPackage(basePath, (err: NodeJS.ErrnoException, data: Package) => {
   }, (config: SystemConfig) => {
     config.baseURL = baseModulePath;
     let configJson = JSON.stringify(config, null, 2);
-    fs.writeFileSync(path.join(basePath, outfile), `SystemJS.config(${configJson});`);
+    fs.writeFileSync(join(basePath, outfile), `SystemJS.config(${configJson});`);
   });
 });
