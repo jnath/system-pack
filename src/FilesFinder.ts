@@ -2,6 +2,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+const join = path.posix.join;
+
 export default class FilesFinder {
   private _files: Array<string> = [];
   private _filesFound: {
@@ -15,7 +17,7 @@ export default class FilesFinder {
     this._files.forEach((file: string) => {
       let exist: boolean = false;
       try {
-        fs.accessSync(path.join(cwd, file));
+        fs.accessSync(join(cwd, file));
         exist = true;
       } catch (error) {
         exist = false;

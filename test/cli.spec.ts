@@ -25,15 +25,15 @@ describe('cli generate system.packages.js', () => {
     });
   });
 
-  it('should have system.packages.js with error', (done) => {
+  it('should have system.packages.js with not package.json throw ENOENT', (done) => {
     fs.unlinkSync(path.join(__dirname, './features/package.json'));
     exec(`node ${path.join(__dirname, '../src/cli.js')}`, {
       cwd: path.join(__dirname, './features')
     }, (err, stdout, stderr) => {
       let ENOENT = err && err.message && err.message.match('Error: ENOENT: no such file or directory');
-      let ENOENT_FILE = err && err.message && err.message.match('lib/test/features/package.json');
+      let ENOENT_FILE = err && err.message && err.message.match(/features(\\|\/)package.json/g);
       assert.isArray(ENOENT, 'must be a ENOENT Error');
-      assert.isArray(ENOENT_FILE, 'must be a ENOENT Error for lib/test/features/package.json file');
+      assert.isArray(ENOENT_FILE, `must be a ENOENT Error for /features/package.json file`);
       done();
     });
   });
@@ -43,7 +43,7 @@ describe('cli generate system.packages.js', () => {
       cwd: path.join(__dirname, './features')
     }, (err, stdout, stderr) => {
       let ENOENT = err && err.message && err.message.match('Error: ENOENT: no such file or directory');
-      let ENOENT_FILE = err && err.message && err.message.match('lib/test/features/node_modules/module2/package.json');
+      let ENOENT_FILE = err && err.message && err.message.match(/features(\\|\/)node_modules(\\|\/)module2(\\|\/)package.json/g);
       assert.isArray(ENOENT, 'must be a ENOENT Error');
       assert.isArray(ENOENT_FILE, 'must be a ENOENT Error for lib/test/features/node_modules/module2/package.json file');
       done();

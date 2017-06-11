@@ -5,6 +5,8 @@ import * as EventEmitter from 'events';
 import { DependencyMap, SystemConfig, PackageConfig, Package } from './Package';
 import { parallel } from './utils';
 
+const join = path.posix.join;
+
 export { Package, PackageConfig, SystemConfig };
 
 export interface GetPackageHandlerCb {
@@ -53,7 +55,7 @@ export default class SystemPackager extends EventEmitter {
   }
   private addDependecies(pkgName: string, getPackage: GetPackageHandler, cb: () => void) {
     getPackage(pkgName, (err: Error, pkg: Package) => {
-      let entryPathPackage = path.join(pkgName, "package.json");
+      let entryPathPackage = join(pkgName, "package.json");
       if (!this.hasPackage(pkgName) && !this.hasPackageConfigPaths(entryPathPackage)) {
         this.addPackageConfigPaths(entryPathPackage)
       }
