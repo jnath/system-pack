@@ -49,4 +49,24 @@ describe('cli generate system.packages.js', () => {
       done();
     });
   });
+  it.only('should have subfolder binding', (done) => {
+    generate.createModule({
+      name: 'module4',
+      dependencies: {
+        module2: '1.2.3'
+      }
+    }, false, { index: true });
+    generate.addDeps('module4', '^1.4.5');
+    exec(`node ${path.join(__dirname, '../src/cli.js')}`, {
+      cwd: path.join(__dirname, './features')
+    }, (err, stdout, stderr) => {
+      let systemPackage: string = fs.readFileSync(path.join(__dirname, './features/system.packages.js')).toString();
+      let json: any = JSON.parse(systemPackage.replace('SystemJS.config(', '').replace(');', ''))
+      assert.property(json, 'map');
+      assert.deepEqual(json.map, {
+        subfolder: 'subfolder/index.js'
+      })
+      done();
+    }).stdout.pipe(process.stdout);
+  })
 });

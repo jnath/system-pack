@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import SystemPackager, { Package, GetPackageHandlerCb, SystemConfig } from './SystemPackager';
 import FilesFinder from './FilesFinder';
+import { mapFolder } from './utils';
 
 const join = path.posix.join;
 
@@ -69,6 +70,8 @@ getPackage(basePath, (err: NodeJS.ErrnoException, data: Package) => {
       if (!pkg.main) {
         noMain(submodulePackagePath, systemPackager, pkg);
       }
+      console.log('mapFolder', submodulePackagePath, mapFolder(submodulePackagePath, submodulePackagePath));
+
       cb(undefined, pkg);
     });
   }, (config: SystemConfig) => {
